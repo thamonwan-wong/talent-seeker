@@ -999,7 +999,7 @@ def resume_scanner_page():
                 # Perform a left join on the job_text_df using index
                 job_df = job_text_df.join(embedded_job_df, how="left")
 
-                st.dataframe(job_df)
+                #st.dataframe(job_df)
                 handle_job_data(job_df)  # Upload to BigQuery
                 st.success("Job details successfully uploaded.")
             except Exception as e:
