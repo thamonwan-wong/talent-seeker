@@ -1,11 +1,11 @@
 streamlit
 langchain 
--U langchain-community 
+langchain-community 
 azure-ai-formrecognizer 
 azure-ai-textanalytics 
 azure-ai-translation-text 
 openai 
--U langchain-openai 
+langchain-openai 
 nltk 
 sentence-transformers 
 scikit-learn 
