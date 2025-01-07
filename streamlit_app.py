@@ -1100,6 +1100,9 @@ def resume_scanner_page():
         # Fetch and display joined data from BigQuery for the selected job_id
     if selected_job_id:
         st.subheader(f"Applicants for Job ID: :orange[{selected_job_id}]")
+        fetched_job_data = fetch_job_details(selected_job_id)
+        print(fetched_job_data)
+        #st.dataframe(fetched_job_data)
 
         # Reload Data Button
         if st.button("Load Applicants Data"):
