@@ -91,11 +91,10 @@ def fetch_effective_jobs():
         if field in job_data.columns:
             # Convert list format to bullet points or readable strings
             job_data[field] = job_data[field].apply(
-                lambda x: "\n".join([f"- {item}" for item in x]) if isinstance(x, list) else x
+                lambda x: "\n".join([f"- {item}" for item in x]) if isinstance(x, list) else str(x)
             )
     
     return job_data
-
 
 def normalize_text(text):
     """Normalize text by lowercasing, removing punctuation, numbers, stopwords,
@@ -1014,7 +1013,7 @@ def resume_scanner_page():
                                    format_func=lambda x: f"{x} - {job_data.loc[job_data['job_id'] == x, 'job_title'].values[0]}")
     selected_job = job_data[job_data["job_id"] == selected_job_id]
     st.write("**Selected Job Details:**")
-    #st.dataframe(selected_job)
+    st.dataframe(selected_job)
 
     # Alternatively, display job details with bullet points
     for _, row in selected_job.iterrows():
@@ -1029,7 +1028,6 @@ def resume_scanner_page():
         st.markdown(row['preferred_skill'])
         st.write("**Other Information:**")
         st.markdown(row['other_information'])
-        st.write("---")
 
     # Fetch and display vector for the selected job
     selected_job_vector = fetch_job_vector(selected_job_id)
