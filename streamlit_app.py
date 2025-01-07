@@ -1005,6 +1005,7 @@ def resume_scanner_page():
                 st.error(f"An error occurred: {e}")
 
     st.subheader("Available Jobs")
+    job_data = fetch_effective_jobs()
     # Reload button to fetch data again
     if st.button("Reload Job Data"):
         job_data = fetch_effective_jobs()
