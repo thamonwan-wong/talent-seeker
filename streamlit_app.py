@@ -1084,9 +1084,6 @@ def resume_scanner_page():
         except (ValueError, SyntaxError):
             st.markdown(row['other_information'])  # Display as-is if parsing fails
 
-        st.write("---")  # Add a separator between jobs
-
-
     # Fetch and display vector for the selected job
     selected_job_vector = fetch_job_vector(selected_job_id)
     #job_vectors = get_all_tag_vectors(selected_job_vector)
