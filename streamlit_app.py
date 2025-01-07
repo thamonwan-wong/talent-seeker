@@ -49,8 +49,8 @@ model_version = st.secrets["general"]["model_version"]
 embeddings_model = AzureOpenAIEmbeddings(
     openai_api_key=openai_api_key,
     openai_api_version="2023-05-15",  # Ensure this matches the version you want to use
-    azure_endpoint="https://recruitment-and-cultural-fit-selection.openai.azure.com/openai/deployments/text-embedding-ada-002/embeddings?api-version=2023-05-15",
-    model="text-embedding-ada-002",  # Use the appropriate model
+    azure_endpoint="https://recruitment-and-cultural-fit-selection.openai.azure.com/openai/deployments/text-embedding-3-small/embeddings?api-version=2023-05-15",
+    model="text-embedding-3-small",  # Use the appropriate model
     chunk_size=	8191  # Explicitly set the chunk size
 )
 
@@ -1022,7 +1022,6 @@ def resume_scanner_page():
     selected_job = job_data[job_data["job_id"] == selected_job_id]
 
     # Display selected job details as a table
-    st.write("**Selected Job Details:**")
     #st.dataframe(selected_job)
 
     # Alternatively, display job details in a user-friendly format
