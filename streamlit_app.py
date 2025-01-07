@@ -745,19 +745,19 @@ def generate_resume_comments(resume_data, job_details):
         {', '.join(summary_parts)}
         {url_message}
 
-        Please start your response with an overall suitability rating for the candidate using a fire emoji scale (🔥). 
+        Please start your response with an overall suitability rating for the candidate using a fire emoji scale (🔥): 
         - The scale ranges from 1 fire (not suitable) to 5 fires (highly suitable). 
         - Example: Rating (0 - 5): 🔥🔥🔥🔥🔥 (Highly Suitable) for 5 fires.
 
-        Then, provide a detailed assessment of the candidate's suitability for the role by addressing the following points:
+        Then, provide a detailed and **strictly aligned** assessment of the candidate's suitability for the role by addressing the following points:
 
-        1. **Alignment with Job Requirements**: Highlight the key aspects of the candidate's background, skills, and experiences that align with the job description. Explain why these aspects make the candidate a good fit for the role.
-        
-        2. **Gaps or Missing Skills**: Identify any critical skills, experiences, or qualifications the candidate lacks based on the job description. Discuss how these gaps might impact their ability to perform in the role.
+        1. **Alignment with Job Requirements**: Strictly evaluate how the candidate's background, skills, and experiences meet the specific requirements of the job description. Highlight any direct matches to the job's key criteria and explain why these aspects make the candidate a strong fit for the role.
 
-        3. **Additional Information Needed**: Suggest what further information would help HR or the hiring manager make a more informed decision about the candidate's fit for the position (e.g., specific examples, metrics, certifications).
+        2. **Gaps or Missing Skills**: Identify any critical skills, experiences, or qualifications the candidate lacks based on the job description. Clearly discuss how these gaps might impact their ability to perform in the role.
 
-        Provide your insights in a professional and structured manner. Ensure your comments are concise, comprehensive, and actionable. Your evaluation will directly influence the decision-making process regarding the candidate's potential for the role.
+        3. **Additional Information Needed**: Suggest what further information or clarifications would help HR or the hiring manager make a more informed decision about the candidate's suitability for the position (e.g., specific examples, metrics, certifications).
+
+        Provide your insights in a professional, structured, and concise manner. Ensure your comments are actionable and adhere strictly to the job description. Your evaluation will directly influence the decision-making process regarding the candidate's potential for the role.
         """
 
 
