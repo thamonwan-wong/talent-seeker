@@ -70,16 +70,30 @@ project_id = 'is-resume-445415'
 client = bigquery.Client.from_service_account_info(service_account_file)
 job_table_name = 'is-resume-445415.is_resume_dataset.job'
 
-def fetch_effective_jobs():
+def fetch_effective_jobs(): 
     """
-    Fetch all job data with status 'effective' from BigQuery.
+    Fetch all job data with status 'effective' from BigQuery and process list fields for better readability.
     """
+    # Query to fetch job data
     query = f"""
-    SELECT job_id, job_title, from_date
+    SELECT job_id, job_title, responsibility, qualification, technical_skill, preferred_skill, other_information, from_date 
     FROM `{job_table_name}`
     WHERE status = 'effective'
     """
+    # Fetch data as a DataFrame
     job_data = client.query(query).to_dataframe()
+
+    # List of fields to process (stored as lists in BigQuery)
+    list_fields = ['responsibility', 'qualification', 'technical_skill', 'preferred_skill', 'other_information']
+
+    # Process each list field
+    for field in list_fields:
+        if field in job_data.columns:
+            # Convert list format to bullet points or readable strings
+            job_data[field] = job_data[field].apply(
+                lambda x: "\n".join([f"- {item}" for item in x]) if isinstance(x, list) else x
+            )
+    
     return job_data
 
 
@@ -1101,9 +1115,6 @@ def resume_scanner_page():
         # Fetch and display joined data from BigQuery for the selected job_id
     if selected_job_id:
         st.subheader(f"Applicants for Job ID: :orange[{selected_job_id}]")
-        fetched_job_data = fetch_job_details(selected_job_id)
-        print(fetched_job_data)
-        st.dataframe(fetched_job_data)
 
         # Reload Data Button
         if st.button("Load Applicants Data"):
