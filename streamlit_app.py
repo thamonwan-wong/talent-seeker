@@ -1023,7 +1023,7 @@ def resume_scanner_page():
 
     # Display selected job details as a table
     st.write("**Selected Job Details:**")
-    st.dataframe(selected_job)
+    #st.dataframe(selected_job)
 
     # Alternatively, display job details in a user-friendly format
     for _, row in selected_job.iterrows():
