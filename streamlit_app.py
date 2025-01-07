@@ -4,6 +4,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import streamlit as st
 import pandas as pd
 import numpy as np
+import db_dtypes
 from google.cloud import bigquery, storage
 from langchain_openai import AzureChatOpenAI
 from langchain_community.document_loaders import AzureAIDocumentIntelligenceLoader
