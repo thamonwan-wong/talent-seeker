@@ -5,6 +5,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import db_dtypes
+import ast
 from google.cloud import bigquery, storage
 from langchain_openai import AzureChatOpenAI
 from langchain_community.document_loaders import AzureAIDocumentIntelligenceLoader
@@ -1030,38 +1031,60 @@ def resume_scanner_page():
 
         # Display responsibilities with bullet points
         st.write("#### Responsibilities:")
-        if isinstance(row['responsibility'], str):  # If already formatted
-            st.markdown(row['responsibility'])
-        elif isinstance(row['responsibility'], list):  # If still a list
-            st.markdown("\n".join([f"- {item}" for item in row['responsibility']]))
-        
+        try:
+            responsibilities = ast.literal_eval(row['responsibility'])  # Convert string to list if needed
+            if isinstance(responsibilities, list):
+                st.markdown("\n".join([f"- {item}" for item in responsibilities]))
+            else:
+                st.markdown(row['responsibility'])
+        except (ValueError, SyntaxError):
+            st.markdown(row['responsibility'])  # Display as-is if parsing fails
+
         # Display qualifications
         st.write("#### Qualifications:")
-        if isinstance(row['qualification'], str):
-            st.markdown(row['qualification'])
-        elif isinstance(row['qualification'], list):
-            st.markdown("\n".join([f"- {item}" for item in row['qualification']]))
+        try:
+            qualifications = ast.literal_eval(row['qualification'])  # Convert string to list if needed
+            if isinstance(qualifications, list):
+                st.markdown("\n".join([f"- {item}" for item in qualifications]))
+            else:
+                st.markdown(row['qualification'])
+        except (ValueError, SyntaxError):
+            st.markdown(row['qualification'])  # Display as-is if parsing fails
 
         # Display technical skills
         st.write("#### Technical Skills:")
-        if isinstance(row['technical_skill'], str):
-            st.markdown(row['technical_skill'])
-        elif isinstance(row['technical_skill'], list):
-            st.markdown("\n".join([f"- {item}" for item in row['technical_skill']]))
+        try:
+            technical_skills = ast.literal_eval(row['technical_skill'])  # Convert string to list if needed
+            if isinstance(technical_skills, list):
+                st.markdown("\n".join([f"- {item}" for item in technical_skills]))
+            else:
+                st.markdown(row['technical_skill'])
+        except (ValueError, SyntaxError):
+            st.markdown(row['technical_skill'])  # Display as-is if parsing fails
 
         # Display preferred skills
         st.write("#### Preferred Skills:")
-        if isinstance(row['preferred_skill'], str):
-            st.markdown(row['preferred_skill'])
-        elif isinstance(row['preferred_skill'], list):
-            st.markdown("\n".join([f"- {item}" for item in row['preferred_skill']]))
+        try:
+            preferred_skills = ast.literal_eval(row['preferred_skill'])  # Convert string to list if needed
+            if isinstance(preferred_skills, list):
+                st.markdown("\n".join([f"- {item}" for item in preferred_skills]))
+            else:
+                st.markdown(row['preferred_skill'])
+        except (ValueError, SyntaxError):
+            st.markdown(row['preferred_skill'])  # Display as-is if parsing fails
 
         # Display other information
         st.write("#### Other Information:")
-        if isinstance(row['other_information'], str):
-            st.markdown(row['other_information'])
-        elif isinstance(row['other_information'], list):
-            st.markdown("\n".join([f"- {item}" for item in row['other_information']]))
+        try:
+            other_info = ast.literal_eval(row['other_information'])  # Convert string to list if needed
+            if isinstance(other_info, list):
+                st.markdown("\n".join([f"- {item}" for item in other_info]))
+            else:
+                st.markdown(row['other_information'])
+        except (ValueError, SyntaxError):
+            st.markdown(row['other_information'])  # Display as-is if parsing fails
+
+        st.write("---")  # Add a separator between jobs
 
 
     # Fetch and display vector for the selected job
