@@ -46,7 +46,7 @@ model_version = st.secrets["general"]["model_version"]
 
 # Initialize Azure OpenAI embeddings client
 embeddings_model = AzureOpenAIEmbeddings(
-    openai_api_key="openai_api_key",
+    openai_api_key=openai_api_key,
     openai_api_version="2023-05-15",  # Ensure this matches the version you want to use
     azure_endpoint="https://recruitment-and-cultural-fit-selection.openai.azure.com/openai/deployments/text-embedding-3-small/embeddings?api-version=2023-05-15",
     model="text-embedding-3-small",  # Use the appropriate model
