@@ -1005,29 +1005,63 @@ def resume_scanner_page():
                 st.error(f"An error occurred: {e}")
 
     st.subheader("Available Jobs")
-    job_data = fetch_effective_jobs()
+    # Reload button to fetch data again
     if st.button("Reload Job Data"):
         job_data = fetch_effective_jobs()
 
-    selected_job_id = st.selectbox("Select a job for mapping:", job_data['job_id'],
-                                   format_func=lambda x: f"{x} - {job_data.loc[job_data['job_id'] == x, 'job_title'].values[0]}")
+    # Select a job for mapping
+    selected_job_id = st.selectbox(
+        "Select a job for mapping:", 
+        job_data['job_id'],
+        format_func=lambda x: f"{x} - {job_data.loc[job_data['job_id'] == x, 'job_title'].values[0]}"
+    )
+
+    # Filter the selected job
     selected_job = job_data[job_data["job_id"] == selected_job_id]
+
+    # Display selected job details as a table
     st.write("**Selected Job Details:**")
     st.dataframe(selected_job)
 
-    # Alternatively, display job details with bullet points
+    # Alternatively, display job details in a user-friendly format
     for _, row in selected_job.iterrows():
-        st.write(f"**Job Title:** {row['job_title']}")
-        st.write("**Responsibilities:**")
-        st.markdown(row['responsibility'])
-        st.write("**Qualifications:**")
-        st.markdown(row['qualification'])
-        st.write("**Technical Skills:**")
-        st.markdown(row['technical_skill'])
-        st.write("**Preferred Skills:**")
-        st.markdown(row['preferred_skill'])
-        st.write("**Other Information:**")
-        st.markdown(row['other_information'])
+        st.write(f"### Job Title: {row['job_title']}")
+
+        # Display responsibilities with bullet points
+        st.write("#### Responsibilities:")
+        if isinstance(row['responsibility'], str):  # If already formatted
+            st.markdown(row['responsibility'])
+        elif isinstance(row['responsibility'], list):  # If still a list
+            st.markdown("\n".join([f"- {item}" for item in row['responsibility']]))
+        
+        # Display qualifications
+        st.write("#### Qualifications:")
+        if isinstance(row['qualification'], str):
+            st.markdown(row['qualification'])
+        elif isinstance(row['qualification'], list):
+            st.markdown("\n".join([f"- {item}" for item in row['qualification']]))
+
+        # Display technical skills
+        st.write("#### Technical Skills:")
+        if isinstance(row['technical_skill'], str):
+            st.markdown(row['technical_skill'])
+        elif isinstance(row['technical_skill'], list):
+            st.markdown("\n".join([f"- {item}" for item in row['technical_skill']]))
+
+        # Display preferred skills
+        st.write("#### Preferred Skills:")
+        if isinstance(row['preferred_skill'], str):
+            st.markdown(row['preferred_skill'])
+        elif isinstance(row['preferred_skill'], list):
+            st.markdown("\n".join([f"- {item}" for item in row['preferred_skill']]))
+
+        # Display other information
+        st.write("#### Other Information:")
+        if isinstance(row['other_information'], str):
+            st.markdown(row['other_information'])
+        elif isinstance(row['other_information'], list):
+            st.markdown("\n".join([f"- {item}" for item in row['other_information']]))
+
 
     # Fetch and display vector for the selected job
     selected_job_vector = fetch_job_vector(selected_job_id)
