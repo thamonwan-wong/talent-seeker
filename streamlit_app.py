@@ -1014,7 +1014,22 @@ def resume_scanner_page():
                                    format_func=lambda x: f"{x} - {job_data.loc[job_data['job_id'] == x, 'job_title'].values[0]}")
     selected_job = job_data[job_data["job_id"] == selected_job_id]
     st.write("**Selected Job Details:**")
-    st.dataframe(selected_job)
+    #st.dataframe(selected_job)
+
+    # Alternatively, display job details with bullet points
+    for _, row in selected_job.iterrows():
+        st.write(f"**Job Title:** {row['job_title']}")
+        st.write("**Responsibilities:**")
+        st.markdown(row['responsibility'])
+        st.write("**Qualifications:**")
+        st.markdown(row['qualification'])
+        st.write("**Technical Skills:**")
+        st.markdown(row['technical_skill'])
+        st.write("**Preferred Skills:**")
+        st.markdown(row['preferred_skill'])
+        st.write("**Other Information:**")
+        st.markdown(row['other_information'])
+        st.write("---")
 
     # Fetch and display vector for the selected job
     selected_job_vector = fetch_job_vector(selected_job_id)
