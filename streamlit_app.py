@@ -1129,7 +1129,13 @@ def resume_scanner_page():
                         #st.json(data)  # Display cleaned and parsed JSON
                         print(data)
 
-                        normalized_resumes = normalize_resume(data["resumes"])
+                        # Ensure data structure compatibility
+                        resumes_data = data.get("resumes", [data])  # Use 'resumes' if it exists, otherwise treat 'data' as a single resume.
+
+                        # Normalize and process resumes
+                        normalized_resumes = normalize_resume(resumes_data)
+
+                        # Process each normalized resume
                         for resume in normalized_resumes:
                             print(resume)
 
