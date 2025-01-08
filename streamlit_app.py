@@ -1167,10 +1167,9 @@ def resume_scanner_page():
                         print(fetched_job_data)
                         #st.dataframe(fetched_job_data)
 
-                        # Example usage with structured resume data and job details
-                        comments = generate_resume_comments(data['resumes'], job_details)
+                        # Generate comments for the resumes
+                        comments = generate_resume_comments(resumes_data, job_details)
                         print(comments)
-                        #st.dataframe(comments)
 
                         # for full_name, comment in comments.items():
                         #     st.write(f"Comment for {full_name}: {comment}")
