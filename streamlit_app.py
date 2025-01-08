@@ -1015,7 +1015,7 @@ def resume_scanner_page():
     selected_job_id = st.selectbox(
         "Select a job for mapping:", 
         job_data['job_id'],
-        format_func=lambda x: f"{x} - {job_data.loc[job_data['job_id'] == x, 'job_title'].values[0]}"
+        format_func=lambda x: f"{x} - {job_data.loc[job_data['job_id'] == x, 'job_title'].values[0]} (date: {job_data.loc[job_data['job_id'] == x, 'from_date'].values[0]})"
     )
 
     # Filter the selected job
@@ -1092,7 +1092,7 @@ def resume_scanner_page():
 
     st.divider()
 
-    st.markdown("Upload **multiple resumes** here (PDF or JPG only)", unsafe_allow_html=True)
+    st.markdown("Upload **resumes** here (PDF or JPG only)", unsafe_allow_html=True)
     uploaded_files = st.file_uploader("", type=["pdf", "jpg"], accept_multiple_files=True)
 
     if uploaded_files:
@@ -1186,7 +1186,7 @@ def resume_scanner_page():
 
         # Fetch and display joined data from BigQuery for the selected job_id
     if selected_job_id:
-        st.subheader(f"Applicants for Job ID: :orange[{selected_job_id}]")
+        st.subheader(f"Applicants for Job ID: :orange[{selected_job_id}] - :orange[{job_data.loc[job_data['job_id'] == selected_job_id, 'job_title'].values[0]}]")
         st.write("Below is the list of applicants ranked by their average score:")
         # Reload Data Button
         if st.button("Load Applicants Data"):
@@ -1270,9 +1270,9 @@ def update_page():
     jobs = client.query(jobs_query).to_dataframe()
     if not jobs.empty:
         selected_job_id = st.selectbox(
-        "Select a Job to View Candidates",
+        "Select a Job to Update Status",
         jobs["job_id"],
-        format_func=lambda x: f"{x} - {jobs[jobs['job_id'] == x]['job_title'].values[0]} ({jobs[jobs['job_id'] == x]['from_date'].values[0]})",
+        format_func=lambda x: f"{x} - {jobs[jobs['job_id'] == x]['job_title'].values[0]} (date: {jobs[jobs['job_id'] == x]['from_date'].values[0]})",
         key="select_job_status"  # Unique key for this selectbox
         )
         current_status = jobs[jobs["job_id"] == selected_job_id]["status"].values[0]
@@ -1305,7 +1305,7 @@ def update_page():
         # Select a job to view candidates
         job_to_update = st.selectbox(
             "Select a Job to View Candidates", job_list["job_id"],
-        format_func=lambda x: f"{x} - {job_list[job_list['job_id'] == x]['job_title'].values[0]} ({job_list[job_list['job_id'] == x]['from_date'].values[0]})",
+        format_func=lambda x: f"{x} - {job_list[job_list['job_id'] == x]['job_title'].values[0]} (date: {job_list[job_list['job_id'] == x]['from_date'].values[0]})",
         key="select_job_candidates"  # Unique key for this selectbox
         )
 
