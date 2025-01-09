@@ -1188,8 +1188,13 @@ def resume_scanner_page():
     if selected_job_id:
         st.subheader(f"Applicants for Job ID: :orange[{selected_job_id}] - :orange[{job_data.loc[job_data['job_id'] == selected_job_id, 'job_title'].values[0]}]")
         st.write("Below is the list of applicants ranked by their average score:")
-        # Reload Data Button
-        if st.button("Load Applicants Data"):
+
+        # "Reload Data" Button
+        if st.button("Reload Data"):
+            st.session_state.reload_applicants = True  # Use session state to control reloading
+
+        # Fetch data only if "reload_applicants" is set or it's the first load
+        if st.session_state.get("reload_applicants", True):
             try:
                 project_id = 'is-resume-445415'
                 client = bigquery.Client.from_service_account_info(service_account_file)
@@ -1228,30 +1233,40 @@ def resume_scanner_page():
                     'comment': 'Comment'
                 })
 
-                if not applicants_data.empty:
-                    # Interactive display for each applicant
-                    for _, row in applicants_data.iterrows():
-                        with st.expander(f"{row['Resume ID']}: {row['Full Name']} (Average Score: {float(row['Average Score']):.2f})"):
-                            # Apply a white background using Markdown and HTML
-                            st.markdown(
-                                f"""
-                                <div style="background-color: white; padding: 10px; border-radius: 5px;">
-                                    <p><strong>Contact Number:</strong> {row['Contact Number']}</p>
-                                    <p><strong>Email:</strong> {row['Email']}</p>
-                                    <p><strong>URL:</strong> <a href="{row['URL']}" target="_blank">{row['URL']}</a></p>
-                                    <p><strong>File Name:</strong> {row['File Name']}</p>
-                                    <p>{row['Comment']}</p>
-                                </div>
-                                """,
-                                unsafe_allow_html=True
-                            )
-                else:
-                    st.write("No applicants data available for the selected job.")
+                # Reset reload state after fetching data
+                st.session_state.reload_applicants = False
 
             except Exception as e:
                 st.error(f"An error occurred while fetching applicant data: {e}")
+                applicants_data = pd.DataFrame()
+
+        if not applicants_data.empty:
+            # Interactive display for each applicant
+            for _, row in applicants_data.iterrows():
+                st.markdown(
+                    f"""
+                    <div style="background-color: #f5f5f5; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                        <h4 style="margin: 0; color: #333; font-size: 18px;">{row['Resume ID']}: {row['Full Name']} (Average Score: {float(row['Average Score']):.2f})</h4>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+                with st.expander("View Details"):
+                    st.markdown(
+                        f"""
+                        <div style="background-color: #ffffff; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                            <p style="margin: 5px 0; font-size: 16px;"><strong>Contact Number:</strong> {row['Contact Number']}</p>
+                            <p style="margin: 5px 0; font-size: 16px;"><strong>Email:</strong> {row['Email']}</p>
+                            <p style="margin: 5px 0; font-size: 16px;"><strong>URL:</strong> <a href="{row['URL']}" target="_blank">{row['URL']}</a></p>
+                            <p style="margin: 5px 0; font-size: 16px;"><strong>File Name:</strong> {row['File Name']}</p>
+                            <p style="margin: 10px 0; font-size: 16px;">{row['Comment']}</p>
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
+
         else:
-            st.write("Click the button to load and view the applicant data.")
+            st.write("No applicants data available for the selected job.")
 
     st.divider()    
 
