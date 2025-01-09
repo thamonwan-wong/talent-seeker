@@ -306,7 +306,7 @@ def extract_text_from_file(file, endpoint, api_key):
     try:
         client = DocumentAnalysisClient(endpoint=endpoint, credential=AzureKeyCredential(api_key))
         # Send the file to Azure's document analysis model
-        poller = client.begin_analyze_document("prebuilt-document", document=file)
+        poller = client.begin_analyze_document("prebuilt-read", document=file)
 
         result = poller.result()
 
