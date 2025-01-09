@@ -747,7 +747,7 @@ def generate_resume_comments(resume_data, job_details):
 
         Please start your response with an overall suitability rating for the candidate using a fire emoji scale (🔥): 
         - The scale ranges from 1 fire (not suitable) to 5 fires (highly suitable). 
-        - Example: Rating (0 - 5): 🔥🔥🔥🔥🔥 (Highly Suitable) for 5 fires.
+        - Example: Rating (1 - 5): 🔥🔥🔥🔥🔥 (Highly Suitable) for 5 fires.
 
         Then, provide a detailed and **strictly aligned** assessment of the candidate's suitability for the role by addressing the following points:
 
