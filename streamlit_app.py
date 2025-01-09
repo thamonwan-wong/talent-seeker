@@ -1190,7 +1190,7 @@ def resume_scanner_page():
         st.write("Below is the list of applicants ranked by their average score:")
 
         # "Reload Data" Button
-        if st.button("Reload Data"):
+        if st.button("Reload Candidate Data"):
             st.session_state.reload_applicants = True  # Use session state to control reloading
 
         # Fetch data only if "reload_applicants" is set or it's the first load
