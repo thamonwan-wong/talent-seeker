@@ -1238,7 +1238,7 @@ def resume_scanner_page():
 
             except Exception as e:
                 st.error(f"An error occurred while fetching applicant data: {e}")
-                applicants_data = pd.DataFrame()
+        applicants_data = pd.DataFrame()
 
         if not applicants_data.empty:
             # Interactive display for each applicant
