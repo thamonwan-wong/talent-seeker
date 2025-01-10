@@ -1192,6 +1192,90 @@ def resume_scanner_page():
         # "Reload Data" Button
         if st.button("Reload Candidate Data"):
             st.session_state.reload_applicants = True  # Use session state to control reloading
+            try:
+                project_id = 'is-resume-445415'
+                client = bigquery.Client.from_service_account_info(service_account_file)
+                query = f"""
+                SELECT
+                    r.resume_id,
+                    r.full_name,
+                    r.contact_number,
+                    r.email,
+                    r.url,
+                    r.file_name,
+                    res.avg_score,
+                    res.comment,
+                    res.status
+                FROM `is-resume-445415.is_resume_dataset.resume` r
+                JOIN `is-resume-445415.is_resume_dataset.result` res
+                ON r.resume_id = res.resume_id
+                WHERE res.job_id = '{selected_job_id}'
+                AND res.status IN ('rejected', 'in process')
+                ORDER BY CAST(res.avg_score AS FLOAT64) DESC
+                """
+
+                query_job = client.query(query)
+                results = query_job.result()
+                applicants_data = pd.DataFrame([dict(row) for row in results])
+
+                # Rename columns for better readability
+                applicants_data = applicants_data.rename(columns={
+                    'resume_id': 'Resume ID',
+                    'full_name': 'Full Name',
+                    'contact_number': 'Contact Number',
+                    'email': 'Email',
+                    'url': 'URL',
+                    'file_name': 'File Name',
+                    'avg_score': 'Average Score',
+                    'comment': 'Comment'
+                })
+                query_job = client.query(query)
+                results = query_job.result()
+                applicants_data = pd.DataFrame([dict(row) for row in results])
+
+                # Rename columns for better readability
+                applicants_data = applicants_data.rename(columns={
+                    'resume_id': 'Resume ID',
+                    'full_name': 'Full Name',
+                    'contact_number': 'Contact Number',
+                    'email': 'Email',
+                    'url': 'URL',
+                    'file_name': 'File Name',
+                    'avg_score': 'Average Score',
+                    'comment': 'Comment'
+                })
+
+            except Exception as e:
+                st.error(f"An error occurred while fetching applicant data: {e}")
+                applicants_data = pd.DataFrame()
+
+        if not applicants_data.empty:
+            # Interactive display for each applicant
+            for _, row in applicants_data.iterrows():
+                st.markdown(
+                    f"""
+                    <div style="background-color: #f5f5f5; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                        <h4 style="margin: 0; color: #333; font-size: 18px;">{row['Resume ID']}: {row['Full Name']} (Average Score: {float(row['Average Score']):.2f})</h4>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+                with st.expander("View Details"):
+                    st.markdown(
+                        f"""
+                        <div style="background-color: #ffffff; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                            <p style="margin: 5px 0; font-size: 16px;"><strong>Contact Number:</strong> {row['Contact Number']}</p>
+                            <p style="margin: 5px 0; font-size: 16px;"><strong>Email:</strong> {row['Email']}</p>
+                            <p style="margin: 5px 0; font-size: 16px;"><strong>URL:</strong> <a href="{row['URL']}" target="_blank">{row['URL']}</a></p>
+                            <p style="margin: 5px 0; font-size: 16px;"><strong>File Name:</strong> {row['File Name']}</p>
+                            <p style="margin: 10px 0; font-size: 16px;">{row['Comment']}</p>
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
+
+        else:
+            st.write("No applicants data available for the selected job.")
 
         # Fetch data only if "reload_applicants" is set or it's the first load
         if st.session_state.get("reload_applicants", True):
